@@ -4,4 +4,5 @@ debug
 run*/
 scripts/__pycache__
 tags
-
+DR_log
+GR_log

@@ -6,7 +6,6 @@
 class GRNet {
 public:
     GRNet(const Net& baseNet, const Design& design, const GridGraph& gridGraph);
-    
     int getIndex() const { return index; }
     std::string getName() const { return name; }
     int getNumPins() const { return pinAccessPoints.size(); }
@@ -17,6 +16,7 @@ public:
     
     void setRoutingTree(std::shared_ptr<GRTreeNode> tree) { routingTree = tree; }
     void clearRoutingTree() { routingTree = nullptr; }
+    int num_paths; // number of available paths in the graph, used for sorting nets. if DGR is not enabled, this is the same as numPins; otherwise, will be set when reading.
     
 private:
     int index;

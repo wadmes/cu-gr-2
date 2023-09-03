@@ -557,7 +557,8 @@ void GridGraph::write(const std::string heatmap_file) const {
         ss << layerNames[layerIndex] << std::endl;
         for (int y = 0; y < ySize; y++) {
             for (int x = 0; x < xSize; x++) {
-                ss << (graphEdges[layerIndex][x][y].capacity - graphEdges[layerIndex][x][y].demand)
+                // ss << (graphEdges[layerIndex][x][y].capacity - graphEdges[layerIndex][x][y].demand)
+                ss << (graphEdges[layerIndex][x][y].capacity)
                      << (x == xSize - 1 ? "" : " ");
             }
             ss << std::endl;

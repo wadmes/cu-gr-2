@@ -13,6 +13,7 @@ GlobalRouter::GlobalRouter(const Design& design, const Parameters& params):
     }
 }
 
+
 void GlobalRouter::route() {
     int n1 = 0, n2 = 0, n3 = 0;
     double t1 = 0, t2 = 0, t3 = 0;
@@ -26,15 +27,35 @@ void GlobalRouter::route() {
     n1 = netIndices.size();
     PatternRoute::readFluteLUT();
     log() << "stage 1: pattern routing" << std::endl;
+    if (parameters.dgr_file != ""){readDGRResult();}
+    if (parameters.dgr_tree_file != ""){readDGRTree();}
     sortNetIndices(netIndices);
+    std::ofstream* os;
+    os = new std::ofstream("tree.txt");
+    int num_DGR_tree = 0;
     for (const int netIndex : netIndices) {
-        PatternRoute patternRoute(nets[netIndex], gridGraph, parameters);
-        patternRoute.constructSteinerTree();
-        patternRoute.constructRoutingDAG();
+        PatternRoute patternRoute(nets[netIndex], gridGraph, parameters, DGR_result[nets[netIndex].getIndex()]);
+        // if DGR_tree[nets[netIndex].getIndex()] is not empty, set patternRoute.steinerTree = DGR_tree[nets[netIndex].getIndex()]
+        if (DGR_tree[nets[netIndex].getIndex()].size() != 0){
+            patternRoute.setSteinerTree(DGR_tree[nets[netIndex].getIndex()][0]); // the first pin is the root pin
+            num_DGR_tree += 1;
+        }
+        else {patternRoute.constructSteinerTree();}
+        
+        // patternRoute.writeTree(*os);
+        if (parameters.dgr_file != "") {
+            // log() << "construct DAG from DGR file: " << parameters.dgr_file << std::endl;
+            patternRoute.constructDAGFromDGR();
+        }
+        else {
+            // log() << "construct DAG from Steiner tree" << std::endl;
+            patternRoute.constructRoutingDAG();
+        }
         patternRoute.run();
         gridGraph.commitTree(nets[netIndex].getRoutingTree());
     }
-    
+    delete os;
+    log() << num_DGR_tree << " / " << netIndices.size() << " nets are DGR trees." << std::endl;
     netIndices.clear();
     for (const auto& net : nets) {
         if (gridGraph.checkOverflow(net.getRoutingTree()) > 0) {
@@ -48,39 +69,44 @@ void GlobalRouter::route() {
     t = std::chrono::high_resolution_clock::now();
     
     // Stage 2: Pattern routing with possible detours
-    n2 = netIndices.size();
-    if (netIndices.size() > 0) {
-        log() << "stage 2: pattern routing with possible detours" << std::endl;
-        GridGraphView<bool> congestionView; // (2d) direction -> x -> y -> has overflow?
-        gridGraph.extractCongestionView(congestionView);
-        // for (const int netIndex : netIndices) {
-        //     GRNet& net = nets[netIndex];
-        //     gridGraph.commitTree(net.getRoutingTree(), true);
-        // }
-        sortNetIndices(netIndices);
-        for (const int netIndex : netIndices) {
-            GRNet& net = nets[netIndex];
-            gridGraph.commitTree(net.getRoutingTree(), true);
-            PatternRoute patternRoute(net, gridGraph, parameters);
-            patternRoute.constructSteinerTree();
-            patternRoute.constructRoutingDAG();
-            patternRoute.constructDetours(congestionView); // KEY DIFFERENCE compared to stage 1
-            patternRoute.run();
-            gridGraph.commitTree(net.getRoutingTree());
+    if (parameters.phase2 != 0){
+        n2 = netIndices.size();
+        std::string filename;
+        // filename == dgr_tree.txt if dgr_file is specified, else filename == CUGR2_tree.txt
+        if (parameters.dgr_file != ""){filename = "dgr_tree.txt";}
+        else {filename = "CUGR2_tree.txt";}
+        os = new std::ofstream(filename);
+        if (netIndices.size() > 0) {
+            log() << "stage 2: pattern routing with possible detours" << std::endl;
+            GridGraphView<bool> congestionView; // (2d) direction -> x -> y -> has overflow?
+            gridGraph.extractCongestionView(congestionView);
+            sortNetIndices(netIndices);
+            for (const int netIndex : netIndices) {
+                GRNet& net = nets[netIndex];
+                gridGraph.commitTree(net.getRoutingTree(), true);
+                PatternRoute patternRoute(net, gridGraph, parameters,DGR_result[nets[netIndex].getIndex()]);
+                patternRoute.constructSteinerTree();
+                patternRoute.constructRoutingDAG();
+                patternRoute.constructDetours(congestionView); // KEY DIFFERENCE compared to stage 1
+                patternRoute.run();
+                patternRoute.writePath(*os);
+                gridGraph.commitTree(net.getRoutingTree());
+            }
+            
+            netIndices.clear();
+            for (const auto& net : nets) {
+                if (gridGraph.checkOverflow(net.getRoutingTree()) > 0) {
+                    netIndices.push_back(net.getIndex());
+                }
+            }
+            log() << netIndices.size() << " / " << nets.size() << " nets have overflows." << std::endl;
+            logeol();
         }
         
-        netIndices.clear();
-        for (const auto& net : nets) {
-            if (gridGraph.checkOverflow(net.getRoutingTree()) > 0) {
-                netIndices.push_back(net.getIndex());
-            }
-        }
-        log() << netIndices.size() << " / " << nets.size() << " nets have overflows." << std::endl;
-        logeol();
+        t2 = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t).count();
+        t = std::chrono::high_resolution_clock::now();
     }
-    
-    t2 = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t).count();
-    t = std::chrono::high_resolution_clock::now();
+
     
     // Stage 3: maze routing on sparsified routing graph
     n3 = netIndices.size();
@@ -94,6 +120,10 @@ void GlobalRouter::route() {
         gridGraph.extractWireCostView(wireCostView);
         sortNetIndices(netIndices);
         SparseGrid grid(10, 10, 0, 0);
+        std::string maze_file;
+        if (parameters.dgr_file != ""){maze_file = "dgr_maze.txt";}
+        else {maze_file = "CUGR2_maze.txt";}
+        os = new std::ofstream(maze_file);
         for (const int netIndex : netIndices) {
             GRNet& net = nets[netIndex];
             // gridGraph.commitTree(net.getRoutingTree(), true);
@@ -104,8 +134,9 @@ void GlobalRouter::route() {
             std::shared_ptr<SteinerTreeNode> tree = mazeRoute.getSteinerTree();
             assert(tree != nullptr);
             
-            PatternRoute patternRoute(net, gridGraph, parameters);
+            PatternRoute patternRoute(net, gridGraph, parameters,DGR_result[nets[netIndex].getIndex()]);
             patternRoute.setSteinerTree(tree);
+            patternRoute.writeTree(*os);
             patternRoute.constructRoutingDAG();
             patternRoute.run();
             
@@ -137,11 +168,14 @@ void GlobalRouter::route() {
 
 void GlobalRouter::sortNetIndices(vector<int>& netIndices) const {
     vector<int> halfParameters(nets.size());
+    vector<int> numPaths(nets.size());
     for (int netIndex : netIndices) {
         auto& net = nets[netIndex];
         halfParameters[netIndex] = net.getBoundingBox().hp();
+        numPaths[netIndex] = net.num_paths;
     }
     sort(netIndices.begin(), netIndices.end(), [&](int lhs, int rhs) {
+        if (parameters.new_sort == 1) {if (numPaths[lhs] != numPaths[rhs]) {return numPaths[lhs] < numPaths[rhs];}}
         return halfParameters[lhs] < halfParameters[rhs];
     });
 }
@@ -334,4 +368,119 @@ void GlobalRouter::write(std::string guide_file) {
     fout << ss.str();
     fout.close();
     log() << "finished writing output..." << std::endl;
+}
+
+void GlobalRouter::readDGRResult() {
+    // read parameters.dgr_file
+    log() << "reading dgr result..." << std::endl;
+    std::ifstream inputFile(parameters.dgr_file);
+    if (!inputFile) {
+        std::cerr << "Error opening the file " << parameters.dgr_file<< " " <<std::endl;
+        return;
+    }
+    //reset num_paths of all net in nets as 0
+    for (auto& net : nets) {
+        net.num_paths = 0;
+    }
+    std::map<int, int> netID2num_paths;
+    std::string line;
+    int netID;
+    int pinID;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        std::string token;
+        std::vector<std::string> tokens;
+        // Tokenize the line based on spaces
+        while (iss >> token) {
+            tokens.push_back(token);
+        }
+        if (tokens.size() == 3) {
+            // It's a netname netID pinID line
+            netID = std::stoi(tokens[1]);
+            pinID = std::stoi(tokens[2]);
+            // std::cout << "netID: " << netID << " pinID: " << pinID << std::endl;
+            // Create an empty vector for this netID and pinID if it doesn't exist
+            // append an empty vector for DGR_result[netID][pinID]
+            
+            DGR_result[netID][pinID].emplace_back();
+            netID2num_paths[netID] += 1;
+        } else if (tokens.size() == 2) {
+            // It's a via_x via_y line
+            int via_x = std::stoi(tokens[0]);
+            int via_y = std::stoi(tokens[1]);
+            int path_num = DGR_result[netID][pinID].size() - 1;
+            // Add the via_x and via_y to the vector for the current netID and pinID
+            // std::cout << "netID: " << netID << " pinID: " << pinID << " path_num: "<< path_num<<" via_x: " << via_x << " via_y: " << via_y << std::endl;
+            DGR_result[netID][pinID][path_num].push_back({via_x, via_y});
+        }
+    }
+    //update num_paths of all net in nets
+    for (auto& net : nets) {
+        // if net.idx is not in netID2num_paths, then net.num_paths = 0
+        if (netID2num_paths.find(net.getIndex()) == netID2num_paths.end()) {
+            net.num_paths = 0;
+            continue;
+        }
+        net.num_paths = netID2num_paths[net.getIndex()];
+    }
+    log() << "finish reading dgr result..." << std::endl;
+    // std::cout << "DGR_result size: " << DGR_result.size() << std::endl;
+}
+
+
+// Read steiner tree selected by DGR and update DGR_tree
+void GlobalRouter::readDGRTree(){
+    log() << "reading dgr tree..." << std::endl;
+    std::ifstream inputFile(parameters.dgr_tree_file);
+    if (!inputFile) {
+        std::cerr << "Error opening the file " << parameters.dgr_tree_file<< " " <<std::endl;
+        return;
+    }
+    int netID;
+    int pin_num; // num of pins in this net
+    std::string line;
+    vector<utils::PointT<int>> steinerPoints;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        std::string token;
+        std::vector<std::string> tokens;
+        // Tokenize the line based on spaces
+        while (iss >> token) {
+            tokens.push_back(token);
+        }
+        if (tokens.size() == 3) {
+            // netname, netId, pin_num
+            netID = std::stoi(tokens[1]);
+            pin_num = std::stoi(tokens[2]);
+            //initialize 
+            DGR_tree[netID].resize(pin_num);
+            for (int i = 0; i < pin_num; i++) {
+                    DGR_tree[netID][i] = std::make_shared<SteinerTreeNode>(-1,-1);
+                }
+            // std::cout << "netID: " << netID << " pin_num: " << pin_num << std::endl;
+        }
+        else{
+            // otherwise, the line is pinIdx, x, y, layer_min, layer_max, child1, child2, childx ...
+            int pinIdx = std::stoi(tokens[0]);
+            int x = std::stoi(tokens[1]);
+            int y = std::stoi(tokens[2]);
+            int layer_min = std::stoi(tokens[3]);
+            int layer_max = std::stoi(tokens[4]);
+            // std::cout << "pinIdx: " << pinIdx << " x: " << x << " y: " << y << " layer_min: " << layer_min << " layer_max: " << layer_max << " " <<tokens.size()<<std::endl;
+            for (int i = 5; i < tokens.size(); i++){
+                int child = std::stoi(tokens[i]);
+                DGR_tree[netID][pinIdx]->children.emplace_back(DGR_tree[netID][child]);
+                // std::cout << "child: " << child << std::endl;
+            }
+            // std::cout << "start assign values" << std::endl;
+            DGR_tree[netID][pinIdx]->x = x;
+            DGR_tree[netID][pinIdx]->y = y;
+            // std::cout << "DGR_tree[netID][pinIdx]->x: " << DGR_tree[netID][pinIdx]->x << " DGR_tree[netID][pinIdx]->y: " << DGR_tree[netID][pinIdx]->y << std::endl;
+            DGR_tree[netID][pinIdx]->fixedLayers.low = layer_min;
+            DGR_tree[netID][pinIdx]->fixedLayers.high = layer_max;
+            // std::cout << "DGR_tree[netID][pinIdx]->fixedLayers.low: " << DGR_tree[netID][pinIdx]->fixedLayers.low << " DGR_tree[netID][pinIdx]->fixedLayers.high: " << DGR_tree[netID][pinIdx]->fixedLayers.high << std::endl;
+
+        }
+    }
+    log() << "finish reading dgr tree..." << std::endl;
 }
