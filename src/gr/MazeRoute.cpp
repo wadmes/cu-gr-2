@@ -52,6 +52,8 @@ void SparseGraph::init(GridGraphView<CostT>& wireCostView, SparseGrid& grid) {
     }
     
     // 2. Add vertices
+    // xs is the x coordinates of sparcified grid lines
+    // ys is the y coordinates of sparcified grid lines
     vertices.reserve(2 * xs.size() * ys.size());
     for (unsigned direction = 0; direction < 2; direction++) {
         for (auto& y : ys) {
@@ -62,6 +64,11 @@ void SparseGraph::init(GridGraphView<CostT>& wireCostView, SparseGrid& grid) {
     }
     
     // 3. Add same-layer connections
+    // edges[u][0] is the upper node (x+1, or y+1) connecting u 
+    // edges[u][1] is the lower node (x-1, or y-1) connecting u
+    // edges[u][2] is the diff-layer node connecting u
+    // costs[u][i] is corresponding cost of edges[u][i]
+
     edges.resize(vertices.size(), {-1, -1, -1});
     costs.resize(vertices.size(), {-1, -1, -1});
     auto addSameLayerEdge = [&] (const unsigned direction, const int xi, const int yi) {
@@ -98,7 +105,7 @@ void SparseGraph::init(GridGraphView<CostT>& wireCostView, SparseGrid& grid) {
         
         edges[u][2] = v;
         edges[v][2] = u;
-        costs[u][2] = costs[v][2] = gridGraph.getUnitViaCost();
+        costs[u][2] = costs[v][2] = 2 * gridGraph.getUnitViaCost();
     };
     
     for (int xi = 0; xi < xs.size(); xi++) {
@@ -108,6 +115,7 @@ void SparseGraph::init(GridGraphView<CostT>& wireCostView, SparseGrid& grid) {
     }
     
     // 5. Add pseudo pin locations
+    // xtoxi maps original x coordinates to the index of the corresponding sparcified grid line
     robin_hood::unordered_map<int, int> xtoxi;
     robin_hood::unordered_map<int, int> ytoyi;
     for (int xi = 0; xi < xs.size(); xi++) xtoxi.emplace(xs[xi], xi);

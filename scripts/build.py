@@ -2,13 +2,16 @@
 
 import argparse, os
 
+os.environ["CC"] = "/scratch/weili3/gcc/bin/gcc"
+os.environ["CXX"] = "/scratch/weili3/gcc/bin/g++"
+
 all_targets = ['route']
 run_files = 'scripts/*.py eval drcu'
 
 def run(command):
     if args.print_commands:
         print(command)
-    if os.system(command) is not 0:
+    if os.system(command) != 0:
         if not args.print_commands:
             print(command)
         quit()
@@ -44,13 +47,13 @@ if args.targets is None:
 else:
     build_targets = args.targets
 
-run('cmake src -B {} {} {}'.format(args.build_dir, mode_cmake_options[args.mode], args.cmake_options))
+run('/scratch/weili3/cmake-3.27.4-linux-x86_64/bin/cmake src -B {} {} {}'.format(args.build_dir, mode_cmake_options[args.mode], args.cmake_options))
 run('mkdir -p {}'.format(args.run_dir))
 run('cp -u -R {} {}'.format(run_files, args.run_dir))
 
 # make
 for target in build_targets:
-    run('cmake --build {} --target {} -- {}'.format(args.build_dir, target, args.make_options))
+    run('/scratch/weili3/cmake-3.27.4-linux-x86_64/bin/cmake --build {} -- {}'.format(args.build_dir, args.make_options))
 cp_targets = all_targets if build_targets == [''] else build_targets
 for target in cp_targets:
     run('cp -u {}/{} {}'.format(args.build_dir, target, args.run_dir))

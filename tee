@@ -1,0 +1,393 @@
+[   0.000] ------------------------------------------------------------------------------ 
+[   0.000]                     ISPD 2019 - Detailed Routing Contest                       
+[   0.000]                              Team number : 15                                  
+[   0.000]                              Team name: Dr. CU                                 
+[   0.000]         Members: Gengjie Chen, Haocheng Li, Bentian Jiang, Jingsong Chen,      
+[   0.000]                  Evangeline F.Y. Young                                         
+[   0.000]         Affiliation: The Chinese University of Hong Kong                       
+[   0.000] ------------------------------------------------------------------------------ 
+[   0.000] Input .lef file   : /home/scratch.rliang_hardware/wli1/cu-gr/benchmark/ispd18_test5/ispd18_test5.input.lef
+[   0.002] Input .def file.  : /home/scratch.rliang_hardware/wli1/cu-gr/benchmark/ispd18_test5/ispd18_test5.input.def
+[   0.002] Input .guide file : /home/scratch.rliang_hardware/wli1/cu-gr/benchmark/ispd18_test5/ispd18_test5.output3
+[   0.002] # of threads      : 8
+[   0.002] Runtime limit (sec): 2000000000
+[   0.002] Output file name  : ./result/Ours_ispd18_test5.txt
+[   0.004] 
+[   3.104] 
+[   3.104] ################################################################
+[   3.104] Start initializing database
+[   3.104] 
+[   3.104] Die region (in DBU): [x: (0, 1857000), y: (0, 1840000)]
+[   3.104] 
+[   3.104] Init RouteGrid ...
+[   3.105] Warning in MetalLayer: For Metal9, no spacing rules...
+[   3.106] Warning: In layer Metal9, width = 1000 > maxEolWidth = 0
+[   4.210] Set unit vio cost with discount of 1 
+[   4.210] METAL LAYERS
+[   4.210] Metal1: dir=X, idx=0, tracks=(locs=100-1899900,pitch=200,#=9500), crossPts=(locs=100-1959900,#=9800), #grids=93100000)
+[   4.210] Metal2: dir=Y, idx=1, tracks=(locs=100-1959900,pitch=200,#=9800), crossPts=(locs=100-1899900,#=9500), #grids=93100000)
+[   4.210] Metal3: dir=X, idx=2, tracks=(locs=100-1899900,pitch=200,#=9500), crossPts=(locs=100-1959900,#=9800), #grids=93100000)
+[   4.210] Metal4: dir=Y, idx=3, tracks=(locs=100-1959900,pitch=200,#=9800), crossPts=(locs=100-1899900,#=9500), #grids=93100000)
+[   4.210] Metal5: dir=X, idx=4, tracks=(locs=100-1899900,pitch=200,#=9500), crossPts=(locs=100-1959900,#=9800), #grids=93100000)
+[   4.210] Metal6: dir=Y, idx=5, tracks=(locs=100-1959900,pitch=200,#=9800), crossPts=(locs=100-2176900,#=10193), #grids=99891400)
+[   4.210] Metal7: dir=X, idx=6, tracks=(locs=500-2176900,pitch=400,#=5442), crossPts=(locs=100-2009700,#=9925), #grids=54011850)
+[   4.210] Metal8: dir=Y, idx=7, tracks=(locs=500-2009700,pitch=400,#=5024), crossPts=(locs=500-3776100,#=6242), #grids=31359808)
+[   4.210] Metal9: dir=X, idx=8, tracks=(locs=2100-3776100,pitch=2000,#=1888), crossPts=(locs=500-2009700,#=5024), #grids=9485312)
+[   4.210] The total number of grid points is 660248370
+[   4.210] The total length of tracks is 148121247200 DBU 
+[   4.210] (Note: dir=Y means that each track is horizontal and has differnt Y)
+[   4.210] Metal layer design rules: 
+[   4.210] Metal1: width=100, paraSpace=(default=100, 0:[100], 200:[120], 700:[200], 940:[260], 1260:[300]), eolSpace=(140:140, ), minArea=46000
+[   4.210] Metal2: width=100, paraSpace=(default=100, 0:[100], 180:[120], 320:[200], 940:[260], 1260:[300]), eolSpace=(160:160, ), minArea=56000
+[   4.210] Metal3: width=100, paraSpace=(default=100, 0:[100], 180:[120], 320:[200], 940:[260], 1260:[300]), eolSpace=(160:160, ), minArea=68000
+[   4.210] Metal4: width=100, paraSpace=(default=100, 0:[100], 180:[120], 320:[200], 940:[260], 1260:[300]), eolSpace=(160:160, ), minArea=68000
+[   4.210] Metal5: width=100, paraSpace=(default=100, 0:[100], 180:[120], 320:[200], 940:[260], 1260:[300]), eolSpace=(160:160, ), minArea=68000
+[   4.210] Metal6: width=100, paraSpace=(default=100, 0:[100], 180:[120], 320:[200], 940:[260], 1260:[300]), eolSpace=(160:160, ), minArea=68000
+[   4.210] Metal7: width=200, paraSpace=(default=200, 0:[200], 400:[240], 800:[320], 3000:[1000]), eolSpace=(240:240, ), minArea=208000
+[   4.210] Metal8: width=200, paraSpace=(default=200, 0:[200], 400:[240], 800:[320], 3000:[1000]), eolSpace=(240:240, ), minArea=208000
+[   4.210] Metal9: width=1000, paraSpace=(default=1000, 0:[1000], 3000:[1300], 9000:[3000], 3000:[900]), eolSpace=(), minArea=4000000
+[   4.210] Wire conflict LUT: 
+[   4.210] Metal1: wire(9800,(-1, 1)), wireTopVia(3,1,3)
+[   4.212] Metal2: wire(9500,(-1, 1)), wireBotVia(3,1,3), wireTopVia(5,1,3)
+[   4.214] Metal3: wire(9800,(-1, 1)), wireBotVia(5,1,3), wireTopVia(5,1,3)
+[   4.216] Metal4: wire(9500,(-1, 1)), wireBotVia(5,1,3), wireTopVia(5,1,3)
+[   4.218] Metal5: wire(9800,(-1, 1)), wireBotVia(5,1,3), wireTopVia(1,3,1)
+[   4.219] Metal6: wire(10193,(-1, 1)), wireBotVia(1,3,1), wireTopVia(1,7,5)
+[   4.221] Metal7: wire(9925,(-2, 2)), wireBotVia(1,5,5), wireTopVia(1,5,5)
+[   4.223] Metal8: wire(6242,(-1, 1)), wireBotVia(1,5,3), wireTopVia(1,5,5)
+[   4.224] Metal9: wire(5024,(-4, 4)), wireBotVia(1,1,11)
+[   4.225] CUT LAYERS
+[   4.225] Via1: idx=0, viaTypes=VIA12_1C (VIA12_1C_H VIA12_1C_V ), #vias=93100000
+[   4.260] Via2: idx=1, viaTypes=VIA23_1C (VIA23_1C_H VIA23_1C_V VIA23_1ST_E VIA23_1ST_W ), #vias=93100000
+[   4.342] Via3: idx=2, viaTypes=VIA34_1C (VIA34_1C_H VIA34_1C_V VIA34_1ST_N VIA34_1ST_S ), #vias=93100000
+[   4.434] Via4: idx=3, viaTypes=VIA45_1C (VIA45_1C_H VIA45_1C_V VIA45_1ST_E VIA45_1ST_W ), #vias=93100000
+[   4.497] Via5: idx=4, viaTypes=VIA5_0_VH (), #vias=93100000
+[   4.519] Via6: idx=5, viaTypes=VIA6_0_HV (), #vias=53331600
+[   4.539] Via7: idx=6, viaTypes=VIA7_0_VH (), #vias=27340608
+[   4.552] Via8: idx=7, viaTypes=VIA8_0_VH (), #vias=9485312
+[   4.557] Cut layer design rules: 
+[   4.557] Via1: width=100, space=150
+[   4.557] Via2: width=100, space=150
+[   4.557] Via3: width=100, space=150
+[   4.557] Via4: width=100, space=150
+[   4.557] Via5: width=100, space=150
+[   4.557] Via6: width=200, space=200
+[   4.557] Via7: width=200, space=200
+[   4.557] Via8: width=920, space=880
+[   4.557] Via conflict LUT: 
+[   4.557] Via1: viaCut(2,2), viaMetal(2,2), viaBotVia(-,-,-), viaTopVia(9500,3,3), viaBotWire(9800,1,3), viaTopWire(9500,1,3)
+[   4.559] Via2: viaCut(2,2), viaMetal(2,2), viaBotVia(9500,3,3), viaTopVia(9800,3,3), viaBotWire(9500,1,3), viaTopWire(9800,1,3)
+[   4.560] Via3: viaCut(2,2), viaMetal(2,2), viaBotVia(9800,3,3), viaTopVia(9500,3,3), viaBotWire(9800,1,3), viaTopWire(9500,1,3)
+[   4.562] Via4: viaCut(2,2), viaMetal(2,2), viaBotVia(9500,3,3), viaTopVia(9800,3,3), viaBotWire(9500,1,3), viaTopWire(9800,1,3)
+[   4.564] Via5: viaCut(2,2), viaMetal(2,2), viaBotVia(9800,3,3), viaTopVia(10193,9,5), viaBotWire(9800,3,3), viaTopWire(10193,3,3)
+[   4.565] Via6: viaCut(2,1), viaMetal(7,4), viaBotVia(10193,9,5), viaTopVia(9925,7,7), viaBotWire(10193,7,5), viaTopWire(9925,5,5)
+[   4.567] Via7: viaCut(1,1), viaMetal(4,4), viaBotVia(9925,7,7), viaTopVia(6242,7,5), viaBotWire(9925,5,5), viaTopWire(6242,5,3)
+[   4.568] Via8: viaCut(5,1), viaMetal(6,1), viaBotVia(6242,7,5), viaTopVia(-,-,-), viaBotWire(6242,5,5), viaTopWire(5024,1,11)
+[   4.570] The total number of via candidates is 555657520
+[   4.570] ROUTE GRID COST
+[   4.570] unitWireCostRaw (score / DBU) = 0.0025
+[   4.570] unitViaCostRaw (score for each via) = 2
+[   4.570] unitShortVioCostRaw (score for each area of m2Pitch * m2Pitch) = 500
+[   4.570] unitSpaceVioCostRaw (score for each violation) = 500
+[   4.570] unitMinAreaVioCostRaw (score for each violation) = 500
+[   4.570] After normalization by unitWireCostRaw: 
+[   4.570] unitWireCost (in DBU) = 1
+[   4.570] unitViaCost (in DBU) = 800
+[   4.570] unitShortVioCost (coeff for "normal" short) = [500, 500, 500, 500, 500, 500, 1000, 1000, 5000]
+[   4.570] unitSpaceVioCost (in DBU) = 200000
+[   4.570] unitMinAreaVioCost (in DBU) = 200000
+[   4.572] 
+[   4.572] Init NetList ...
+[   4.861] The number of nets is 72394
+[   4.861] The number of pins is 318195
+[   4.861] 
+[   4.861] Mark pin & obs occupancy on RouteGrid ...
+[   4.937] The number of unused pins is 144070
+[   4.937] The number of OBS is 166938
+[   4.937] The number of special net OBS is 0
+[   4.937] The number of fixed objects on each layers:
+[   4.937] Metal1: 1074908
+[   4.937] Metal2: 211610
+[   4.937] Metal3: 900
+[   4.937] Metal4: 900
+[   4.937] Metal5: 900
+[   4.937] Metal6: 900
+[   4.937] Metal7: 1075
+[   4.937] Metal8: 136
+[   4.937] 
+[   4.937] mark fixed metal rtrees... 
+[   4.937] mark fixed metal batch ...
+[   5.017] MEM(MB): init/cur=1381/1489, incr=108
+[   5.017] 
+[   5.735] pinViaMT #threads=8 (dur: min=0.528167, max=0.528765, avg=0.528367) 
+[   5.735] mark fixed metal batch ...
+[   5.735] MEM(MB): init/cur=1530/1530, incr=0
+[   5.735] 
+[   5.737] mark poor wire map... 
+[  12.011] mark poor via map... 
+[  12.011] usePoorViaMap [true, true, false, false, false, false, false, false] 
+[  12.011] Init poorViaMapFast ...
+[  14.726] cutlayer0: poor=59969996, one=4625564, multi=6141, good=28498299, nInterv=6900182, totVia=93100000, ratio=0.074
+[  14.727] cutlayer1: poor=51609461, one=20, multi=0, good=41490519, nInterv=299927, totVia=93100000, ratio=0.003
+[  14.727] MEM(MB): init/cur=2016/2776, incr=760
+[  14.727] 
+[  14.729] Metal1 mtSafeMargin = max { 1200 380 300 } = 1200 
+[  14.729] Metal2 mtSafeMargin = max { 1600 1460 300 } = 1600 
+[  14.729] Metal3 mtSafeMargin = max { 1600 1460 300 } = 1600 
+[  14.729] Metal4 mtSafeMargin = max { 1600 1460 300 } = 1600 
+[  14.729] Metal5 mtSafeMargin = max { 1600 1460 300 } = 1600 
+[  14.729] Metal6 mtSafeMargin = max { 1600 1280 300 } = 1600 
+[  14.729] Metal7 mtSafeMargin = max { 3200 1280 240 } = 3200 
+[  14.729] Metal8 mtSafeMargin = max { 3200 2200 240 } = 3200 
+[  14.729] Metal9 mtSafeMargin = max { 12000 2200 0 } = 12000 
+[  14.729] Slice RouteGuides ...
+[  14.729] 
+[  15.424] Construct r-trees for route guides of each net ...
+[  15.424] 
+[  15.595] Finish initializing database
+[  15.595] MEM: cur=3144.26MB, peak=3144.26MB
+[  15.595] 
+[  15.595] 
+[  15.595] ################################################################
+[  15.595] Start RRR iteration 0
+[  15.595] 
+[  15.794] Hist wire usage is [(0.1, 2399056)] 
+[  15.794] Hist via usage is [] 
+[  15.794] Set unit vio cost with discount of 0.1 
+[  15.794] defaultGuideExpand = 2 
+[  15.794] wrongWayPointDensity = 0.1 
+[  15.794] addDiffLayerGuides = false 
+[  23.776] preMT #threads=8 (dur: min=7.85274, max=7.90629, avg=7.86418) 
+[  23.778] 
+[  23.778] ----------------------------------------------------------------
+[  23.782] Stage PRE: #nets = 72394
+[  23.782] 	#succ = 72394 (#SUCC_NORMAL = 72258 #SUCC_ONE_PIN = 136 )
+[  23.782] ----------------------------------------------------------------
+[  23.782] 
+[  23.782] Start multi-thread scheduling. There are 72394 nets to route.
+[  40.290] Finish multi-thread scheduling. There will be 126 batches.
+[  40.290] 
+[ 461.078] allMazeMT #threads=8 (dur: min=410.217, max=417.218, avg=411.493) 
+[ 461.078] allCommitMT #threads=8 (dur: min=0.388087, max=0.39219, avg=0.38956) 
+[ 461.078] allGetViaTypesMT #threads=8 (dur: min=1.89235, max=1.90592, avg=1.89717) 
+[ 461.078] allCommitViaTypesMT #threads=8 (dur: min=1.20635, max=1.21088, avg=1.20821) 
+[ 461.702] 
+[ 461.702] Finish RRR iteration 0
+[ 461.702] MEM: cur=6738.42MB, peak=7111.06MB
+[ 461.702] 
+[ 461.702] ----------------------------------------------------------------
+[ 461.702] Stage PRE: #nets = 72394
+[ 461.702] 	#succ = 72394 (#SUCC_NORMAL = 72258 #SUCC_ONE_PIN = 136 )
+[ 461.702] Stage MAZE: #nets = 72258
+[ 461.702] 	#succ = 72258 (#SUCC_NORMAL = 72258 )
+[ 461.702] Stage POST_MAZE: #nets = 0
+[ 461.702] 	#succ = 0 ()
+[ 461.702] 	misc (#MIN_AREA_SHADOWED_VIO = 1 #REMOVE_TRACK_SWITCH_PIN = 78 #REMOVE_TRACK_SWITCH_NORMAL = 783 #REMOVE_TRACK_SWITCH_HORSESHOE = 505 )
+[ 461.702] Stage POST: #nets = 0
+[ 461.702] 	#succ = 0 ()
+[ 461.702] 	misc (#LINK_PIN_VIO = 549 )
+[ 461.702] ----------------------------------------------------------------
+[ 461.702] 
+[ 461.702] 
+[ 461.702] ################################################################
+[ 461.702] Start RRR iteration 1
+[ 461.702] 
+[ 469.412] Add hist cost 
+[ 472.204] Fade hist cost by 0.01 ... 
+[ 472.903] Hist wire usage is [(0.001, 2237652), (0.01, 3993), (0.011, 166), (0.02, 175), (0.021, 98), (0.03, 6), (0.031, 3), (0.1, 161391)] 
+[ 472.903] Hist via usage is [(0.01, 85)] 
+[ 472.903] Set unit vio cost with discount of 0.4 
+[ 472.903] defaultGuideExpand = 4 
+[ 472.903] wrongWayPointDensity = 0.2 
+[ 472.903] addDiffLayerGuides = true 
+[ 474.373] preMT #threads=8 (dur: min=1.41581, max=1.46469, avg=1.427) 
+[ 474.374] 
+[ 474.374] ----------------------------------------------------------------
+[ 474.374] Stage PRE: #nets = 1860
+[ 474.374] 	#succ = 1860 (#SUCC_NORMAL = 1860 )
+[ 474.374] 	misc (#ADD_DIFF_LAYER_GUIDE_1 = 296 #ADD_DIFF_LAYER_GUIDE_2 = 126 )
+[ 474.374] ----------------------------------------------------------------
+[ 474.374] 
+[ 474.374] Start multi-thread scheduling. There are 1860 nets to route.
+[ 475.800] Finish multi-thread scheduling. There will be 122 batches.
+[ 475.800] 
+[ 588.339] allMazeMT #threads=8 (dur: min=62.6634, max=111.737, avg=74.8097) 
+[ 588.339] allCommitMT #threads=8 (dur: min=0.0679649, max=0.106302, avg=0.0822108) 
+[ 588.339] allGetViaTypesMT #threads=8 (dur: min=0.218767, max=0.368969, avg=0.263864) 
+[ 588.339] allCommitViaTypesMT #threads=8 (dur: min=0.228289, max=0.276211, avg=0.251605) 
+[ 588.442] 
+[ 588.442] Finish RRR iteration 1
+[ 588.442] MEM: cur=7067.66MB, peak=7377.43MB
+[ 588.442] 
+[ 588.442] ----------------------------------------------------------------
+[ 588.442] Stage PRE: #nets = 1860
+[ 588.442] 	#succ = 1860 (#SUCC_NORMAL = 1860 )
+[ 588.442] 	misc (#ADD_DIFF_LAYER_GUIDE_1 = 296 #ADD_DIFF_LAYER_GUIDE_2 = 126 )
+[ 588.442] Stage MAZE: #nets = 1860
+[ 588.442] 	#succ = 1860 (#SUCC_NORMAL = 1860 )
+[ 588.442] Stage POST_MAZE: #nets = 0
+[ 588.442] 	#succ = 0 ()
+[ 588.442] 	misc (#MIN_AREA_SHADOWED_VIO = 2 #REMOVE_TRACK_SWITCH_PIN = 6 #REMOVE_TRACK_SWITCH_NORMAL = 89 #REMOVE_TRACK_SWITCH_HORSESHOE = 131 )
+[ 588.442] Stage POST: #nets = 0
+[ 588.442] 	#succ = 0 ()
+[ 588.442] 	misc (#LINK_PIN_VIO = 744 )
+[ 588.442] ----------------------------------------------------------------
+[ 588.442] 
+[ 588.442] 
+[ 588.442] ################################################################
+[ 588.442] Start RRR iteration 2
+[ 588.442] 
+[ 596.149] Add hist cost 
+[ 598.922] Fade hist cost by 0.01 ... 
+[ 599.530] Hist wire usage is [(1e-05, 2229423), (0.0001, 3982), (0.00011, 159), (0.0002, 175), (0.00021, 95), (0.0003, 6), (0.00031, 2), (0.001, 69761), (0.01, 841), (0.01001, 2), (0.0101, 11), (0.01011, 6), (0.02, 27), (0.02021, 3), (0.021, 1), (0.03, 1), (0.03011, 1), (0.03031, 1), (0.031, 1), (0.1, 99857)] 
+[ 599.530] Hist via usage is [(0.0001, 83), (0.01, 4), (0.0101, 2)] 
+[ 599.530] Set unit vio cost with discount of 0.7 
+[ 599.530] defaultGuideExpand = 8 
+[ 599.530] wrongWayPointDensity = 0.3 
+[ 599.530] addDiffLayerGuides = true 
+[ 600.490] preMT #threads=8 (dur: min=0.647371, max=0.955944, avg=0.687474) 
+[ 600.490] 
+[ 600.490] ----------------------------------------------------------------
+[ 600.490] Stage PRE: #nets = 1144
+[ 600.490] 	#succ = 1144 (#SUCC_NORMAL = 1144 )
+[ 600.490] 	misc (#ADD_DIFF_LAYER_GUIDE_1 = 443 #ADD_DIFF_LAYER_GUIDE_2 = 115 )
+[ 600.490] ----------------------------------------------------------------
+[ 600.490] 
+[ 600.490] Start multi-thread scheduling. There are 1144 nets to route.
+[ 601.246] Finish multi-thread scheduling. There will be 116 batches.
+[ 601.246] 
+[ 777.276] allMazeMT #threads=8 (dur: min=54.5972, max=175.433, avg=82.893) 
+[ 777.276] allCommitMT #threads=8 (dur: min=0.0449239, max=0.112107, avg=0.0689619) 
+[ 777.276] allGetViaTypesMT #threads=8 (dur: min=0.117035, max=0.271097, avg=0.160989) 
+[ 777.276] allCommitViaTypesMT #threads=8 (dur: min=0.11984, max=0.169609, avg=0.143785) 
+[ 777.345] 
+[ 777.345] Finish RRR iteration 2
+[ 777.345] MEM: cur=7490.57MB, peak=9121.47MB
+[ 777.345] 
+[ 777.345] ----------------------------------------------------------------
+[ 777.345] Stage PRE: #nets = 1144
+[ 777.345] 	#succ = 1144 (#SUCC_NORMAL = 1144 )
+[ 777.345] 	misc (#ADD_DIFF_LAYER_GUIDE_1 = 443 #ADD_DIFF_LAYER_GUIDE_2 = 115 )
+[ 777.345] Stage MAZE: #nets = 1144
+[ 777.345] 	#succ = 1144 (#SUCC_NORMAL = 1144 )
+[ 777.345] Stage POST_MAZE: #nets = 0
+[ 777.345] 	#succ = 0 ()
+[ 777.345] 	misc (#MIN_AREA_SHADOWED_VIO = 3 #REMOVE_TRACK_SWITCH_PIN = 1 #REMOVE_TRACK_SWITCH_NORMAL = 77 #REMOVE_TRACK_SWITCH_HORSESHOE = 51 )
+[ 777.345] Stage POST: #nets = 0
+[ 777.345] 	#succ = 0 ()
+[ 777.345] 	misc (#LINK_PIN_VIO = 742 )
+[ 777.345] ----------------------------------------------------------------
+[ 777.345] 
+[ 777.345] 
+[ 777.345] ################################################################
+[ 777.345] Start RRR iteration 3
+[ 777.345] 
+[ 784.959] Add hist cost 
+[ 787.737] Fade hist cost by 0.01 ... 
+[ 788.249] Hist wire usage is [(1e-07, 2227869), (1e-06, 3977), (1.1e-06, 158), (2e-06, 175), (2.1e-06, 94), (3e-06, 6), (3.1e-06, 2), (1e-05, 67817), (0.0001, 839), (0.0001001, 2), (0.000101, 9), (0.0001011, 3), (0.0002, 27), (0.0002021, 1), (0.00021, 1), (0.0003, 1), (0.0003031, 1), (0.00031, 1), (0.001, 35805), (0.01, 281), (0.0100001, 1), (0.010001, 12), (0.0100011, 1), (0.0101, 3), (0.010101, 2), (0.0101011, 2), (0.011, 4), (0.02, 7), (0.0201011, 1), (0.0202021, 1), (0.021, 4), (0.03, 1), (0.0300021, 1), (0.0302021, 1), (0.0303011, 1), (0.031, 1), (0.1, 67549)] 
+[ 788.249] Hist via usage is [(1e-06, 83), (0.0001, 4), (0.000101, 2), (0.01, 6)] 
+[ 788.249] Set unit vio cost with discount of 1 
+[ 788.249] defaultGuideExpand = 14 
+[ 788.249] wrongWayPointDensity = 0.4 
+[ 788.249] addDiffLayerGuides = true 
+[ 789.635] preMT #threads=8 (dur: min=0.488298, max=1.38272, avg=0.605445) 
+[ 789.635] 
+[ 789.635] ----------------------------------------------------------------
+[ 789.635] Stage PRE: #nets = 778
+[ 789.635] 	#succ = 778 (#SUCC_NORMAL = 778 )
+[ 789.635] 	misc (#ADD_DIFF_LAYER_GUIDE_1 = 416 #ADD_DIFF_LAYER_GUIDE_2 = 117 )
+[ 789.635] ----------------------------------------------------------------
+[ 789.635] 
+[ 789.635] Start multi-thread scheduling. There are 778 nets to route.
+[ 790.117] Finish multi-thread scheduling. There will be 111 batches.
+[ 790.117] 
+[1097.599] allMazeMT #threads=8 (dur: min=35.8801, max=306.981, avg=94.9837) 
+[1097.599] allCommitMT #threads=8 (dur: min=0.0231288, max=0.131279, avg=0.0590662) 
+[1097.599] allGetViaTypesMT #threads=8 (dur: min=0.0455978, max=0.227048, avg=0.0947468) 
+[1097.599] allCommitViaTypesMT #threads=8 (dur: min=0.0462904, max=0.0992657, avg=0.0698492) 
+[1097.672] 
+[1097.672] Finish RRR iteration 3
+[1097.672] MEM: cur=9902.99MB, peak=12161.9MB
+[1097.673] 
+[1097.673] ----------------------------------------------------------------
+[1097.673] Stage PRE: #nets = 778
+[1097.673] 	#succ = 778 (#SUCC_NORMAL = 778 )
+[1097.673] 	misc (#ADD_DIFF_LAYER_GUIDE_1 = 416 #ADD_DIFF_LAYER_GUIDE_2 = 117 )
+[1097.673] Stage MAZE: #nets = 778
+[1097.673] 	#succ = 778 (#SUCC_NORMAL = 778 )
+[1097.673] Stage POST_MAZE: #nets = 0
+[1097.673] 	#succ = 0 ()
+[1097.673] 	misc (#MIN_AREA_SHADOWED_VIO = 2 #REMOVE_TRACK_SWITCH_PIN = 3 #REMOVE_TRACK_SWITCH_NORMAL = 81 #REMOVE_TRACK_SWITCH_HORSESHOE = 18 )
+[1097.673] Stage POST: #nets = 0
+[1097.673] 	#succ = 0 ()
+[1097.673] 	misc (#LINK_PIN_VIO = 741 )
+[1097.673] ----------------------------------------------------------------
+[1097.673] 
+[1117.209] There will be 55 batches for getting via types. 
+[1117.577] allPostMaze2MT #threads=8 (dur: min=0.18438, max=0.193203, avg=0.187245) 
+[1120.881] allGetViaTypesMT #threads=8 (dur: min=1.33996, max=1.42373, avg=1.3681) 
+[1120.881] allCommitViaTypesMT #threads=8 (dur: min=1.83758, max=1.86935, avg=1.85393) 
+[1124.780] allGetViaTypesMT #threads=8 (dur: min=2.09871, max=2.22615, avg=2.14139) 
+[1124.781] allCommitViaTypesMT #threads=8 (dur: min=1.63172, max=1.66253, avg=1.64784) 
+[1128.719] allGetViaTypesMT #threads=8 (dur: min=2.10048, max=2.21237, avg=2.13883) 
+[1128.719] allCommitViaTypesMT #threads=8 (dur: min=1.68581, max=1.71576, avg=1.70162) 
+[1129.117] postMT #threads=8 (dur: min=0.397112, max=0.397589, avg=0.397263) 
+[1129.118] 
+[1129.119] ################################################################
+[1129.119] Finish all RRR iterations and PostRoute
+[1129.119] MEM: cur=9903MB, peak=12161.9MB
+[1129.121] 
+[1129.121] ----------------------------------------------------------------
+[1129.121] Stage PRE: #nets = 778
+[1129.131] 	#succ = 778 (#SUCC_NORMAL = 778 )
+[1129.131] 	misc (#ADD_DIFF_LAYER_GUIDE_1 = 416 #ADD_DIFF_LAYER_GUIDE_2 = 117 )
+[1129.131] Stage MAZE: #nets = 778
+[1129.131] 	#succ = 778 (#SUCC_NORMAL = 778 )
+[1129.131] Stage POST_MAZE: #nets = 0
+[1129.131] 	#succ = 0 ()
+[1129.131] 	misc (#MIN_AREA_VIO = 2 #MIN_AREA_SHADOWED_VIO = 4 #REMOVE_TRACK_SWITCH_PIN = 3 #REMOVE_TRACK_SWITCH_NORMAL = 81 #REMOVE_TRACK_SWITCH_HORSESHOE = 18 )
+[1129.131] Stage POST: #nets = 72258
+[1129.131] 	#succ = 72258 (#SUCC_NORMAL = 23364 #SUCC_CONN_EXT_PIN = 48894 )
+[1129.131] 	misc (#LINK_PIN_VIO = 3749 #FILL_SAME_NET_SPACE = 23603 )
+[1129.240] --- Wire Usage ---
+[1129.240] Among 660248370 grid points and 7.40606e+08-long tracks (length is normalized by M2 pitch): 
+[1129.240] usage      |    grid    |   length  
+[1129.240] 1          | 27988706   | 2.83332e+07
+[1129.240] 2          | 29         | 29        
+[1129.440] --- Via Usage ---
+[1129.440] Among 555657520 via candidates --- 
+[1129.440] usage      | routed    
+[1129.440] 1          | 940925    
+[1129.906] --- Wire-Wire Short/Spacing Vios Vios ---
+[1129.906] usage      | # space    |        # short          |       short area       
+[1129.906] layer      | wire-wire  | wire-wire  | wire-fixed | wire-wire  | wire-fixed
+[1129.906] Metal3     | 0          | 0          | 57         | 0          | 28.5      
+[1129.906] Metal4     | 0          | 0          | 67         | 0          | 33.5      
+[1129.906] Metal5     | 0          | 0          | 476        | 0          | 238       
+[1129.906] Metal6     | 27         | 27         | 140        | 13.5       | 70        
+[1129.906] Metal7     | 4          | 2          | 0          | 2          | 0         
+[1129.906] SumW       | 31         | 29         | 740        | 15.5       | 370       
+[1129.906] BigSumW    | 31         | 769                     | 385.5                  
+[1132.410] --- Via-Via/Wire Short/Spacing Vios ---
+[1132.410] layer      |      via-via            |      via-wire           | via-fixed 
+[1132.410]            | same       | top        | bot        | top        | 
+[1132.410] Via5       | 0          | 0          | 3          | 12         | 0         
+[1132.410] Via6       | 1          | 0          | 32         | 10         | 0         
+[1132.410] Via7       | 0          | 0          | 3          | 3          | 0         
+[1132.410] SumV       | 1          | 0          | 38         | 25         | 0         
+[1132.410] BigSumV    | 1                       | 63                      | 0         
+[1132.410] --- Estimated Scores ---
+[1132.410] item       | metric     | weight     | score      | %         
+[1132.410] wirelength | 2.83333e+07 | 0.5        | 1.41666e+07 | 0.86972   
+[1132.410] # vias     | 940925     | 2          | 1.88185e+06 | 0.115531  
+[1132.410] short      | 385.5      | 500        | 192750     | 0.0118333 
+[1132.410] space      | 95         | 500        | 47500      | 0.00291613
+[1132.410] total score = 1.62887e+07
+[1132.410] ----------------------------------------------------------------
+[1132.410] 
+[1137.892] Finish writing def
+[1137.892] MEM: cur=10049.7MB, peak=12161.9MB
+[1137.892] 
+[1137.925] --------------------------------------------------------------------------- 
+[1137.925]                                Terminated...                                
+[1137.925] --------------------------------------------------------------------------- 

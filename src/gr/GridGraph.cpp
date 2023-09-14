@@ -1,7 +1,7 @@
 #include "GridGraph.h"
 #include "GRNet.h"
 
-GridGraph::GridGraph(const Design& design, const Parameters& params): parameters(params) {
+GridGraph::GridGraph(const Design& design, const Parameters& params): libDBU(design.getLibDBU()), parameters(params) {
     gridlines = design.getGridlines();
     nLayers = design.getNumLayers();
     xSize = gridlines[0].size() - 1;
@@ -16,6 +16,8 @@ GridGraph::GridGraph(const Design& design, const Parameters& params): parameters
         }
     }
     
+    m2_pitch = design.getLayer(1).getPitch();
+
     layerNames.resize(nLayers);
     layerDirections.resize(nLayers);
     layerMinLengths.resize(nLayers);
@@ -164,7 +166,45 @@ GridGraph::GridGraph(const Design& design, const Parameters& params): parameters
             }
         }
     }
+
+    // Write to layout.txt
+    std::ofstream layoutFile("layout.txt");
+    if (layoutFile.is_open()) {
+        // Writing getSize(0), getSize(1), getM2Pitch()
+        layoutFile << xSize << " " << ySize << " " << m2_pitch << std::endl;
+        
+        // Writing layer details
+        for (int layerIndex = 0; layerIndex < nLayers; layerIndex++) {
+            layoutFile << layerIndex << " " 
+                    << design.getLayer(layerIndex).getPitch() << " "
+                    << unit_length_short_costs[layerIndex] << " " 
+                    << layerMinLengths[layerIndex] 
+                    << std::endl;
+        }
+
+        layoutFile.close();
+    } else {
+        std::cerr << "Failed to open layout.txt for writing!" << std::endl;
+    }
+
+    // Write to edge_length.txt
+    std::ofstream edgeLengthFile("edge_length.txt");
+    if (edgeLengthFile.is_open()) {
+        // Considering you have two directions 0 and 1
+        for (unsigned direction = 0; direction <= 1; direction++) {
+            for (size_t edgeIndex = 0; edgeIndex + 1 < gridCenters[direction].size(); edgeIndex++) {
+                edgeLengthFile << gridCenters[direction][edgeIndex + 1] - gridCenters[direction][edgeIndex] << " ";
+            }
+            edgeLengthFile << std::endl; // Move to the next line for the next direction
+        }
+
+        edgeLengthFile.close();
+    } else {
+        std::cerr << "Failed to open edge_length.txt for writing!" << std::endl;
+    }
+
 }
+
 
 utils::IntervalT<int> GridGraph::rangeSearchGridlines(const unsigned dimension, const utils::IntervalT<DBU>& locInterval) const {
     utils::IntervalT<int> range;
@@ -262,11 +302,12 @@ void GridGraph::selectAccessPoints(GRNet& net, robin_hood::unordered_map<uint64_
             int accessibility = 0;
             if (point.layerIdx >= parameters.min_routing_layer) {
                 unsigned direction = getLayerDirection(point.layerIdx);
-                accessibility += getEdge(point.layerIdx, point.x, point.y).capacity >= 1;
+                // test capacity - demand here
+                accessibility += (getEdge(point.layerIdx, point.x, point.y).capacity - getEdge(point.layerIdx, point.x, point.y).demand) >= 1;
                 if (point[direction] > 0) {
                     auto lower = point;
                     lower[direction] -= 1;
-                    accessibility += getEdge(lower.layerIdx, lower.x, lower.y).capacity >= 1;
+                    accessibility += (getEdge(lower.layerIdx, lower.x, lower.y).capacity - getEdge(lower.layerIdx, lower.x, lower.y).demand) >= 1;
                 }
             } else {
                 accessibility = 1;
@@ -469,6 +510,9 @@ void GridGraph::extractWireCostView(GridGraphView<CostT>& view) const {
                 unitLengthShortCost = min(unitLengthShortCost, getUnitLengthShortCost(layerIndex));
             }
         }
+        // print unitLengthShortCost
+        // log() << "unitLengthShortCost: " << unitLengthShortCost << std::endl;
+
         for (int x = 0; x < xSize; x++) {
             for (int y = 0; y < ySize; y++) {
                 int edgeIndex = direction == MetalLayer::H ? x : y;
@@ -486,6 +530,8 @@ void GridGraph::extractWireCostView(GridGraphView<CostT>& view) const {
                         capacity < 1.0 ? 1.0 : logistic(capacity - demand, parameters.maze_logistic_slope)
                     )
                 );
+                // print length, and overflow cost: length * unitLengthShortCost * (capacity < 1.0 ? 1.0 : logistic(capacity - demand, parameters.maze_logistic_slope))
+                // log() << "length: " << length << ", overflow cost: " << length * unitLengthShortCost * (capacity < 1.0 ? 1.0 : logistic(capacity - demand, parameters.maze_logistic_slope)) << std::endl;
             }
         }
     }
@@ -555,7 +601,8 @@ void GridGraph::write(const std::string heatmap_file) const {
         ss << layerNames[layerIndex] << std::endl;
         for (int y = 0; y < ySize; y++) {
             for (int x = 0; x < xSize; x++) {
-                ss << (graphEdges[layerIndex][x][y].capacity - graphEdges[layerIndex][x][y].demand)
+                // ss << (graphEdges[layerIndex][x][y].capacity - graphEdges[layerIndex][x][y].demand)
+                ss << (graphEdges[layerIndex][x][y].capacity)
                      << (x == xSize - 1 ? "" : " ");
             }
             ss << std::endl;

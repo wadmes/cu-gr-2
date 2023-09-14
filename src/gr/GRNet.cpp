@@ -6,6 +6,7 @@ GRNet::GRNet(const Net& baseNet, const Design& design, const GridGraph& gridGrap
     name = baseNet.getName();
     const auto& pinRefs = baseNet.getAllPinRefs();
     int numPins = pinRefs.size();
+    num_paths = numPins;
     pinAccessPoints.resize(numPins);
     for (int pinIndex = 0; pinIndex < pinRefs.size(); pinIndex++) {
         vector<BoxOnLayer> pinShapes;

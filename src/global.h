@@ -51,10 +51,14 @@ struct Parameters {
     std::string lef_file;
     std::string def_file;
     std::string out_file;
+    std::string dgr_file;
+    std::string dgr_tree_file; // whether DGR picks new trees, if it is not empty, then load the new tree
     int threads = 1;
+    int new_sort = 1; // new sort, which uses the number of available edges in DAG as the first priority. 1: enable; 0: disable.
+    int phase2 = 1; // 1: enable phase 2; 0: disable phase 2
     // 
     const double weight_wire_length = 0.5;
-    const double weight_via_number = 4.0;
+    const double weight_via_number = 4.0; // used in maze routing to estimate via cost for a turning point
     const double weight_short_area = 500.0;
     //
     const int min_routing_layer = 1;
@@ -70,7 +74,7 @@ struct Parameters {
     const double wire_patch_threshold = 2.0;
     const double wire_patch_inflation_rate = 1.2;
     //
-    const bool write_heatmap = false;
+    const bool write_heatmap = true;
     
     Parameters(int argc, char* argv[]) {
         if (argc <= 1) {
@@ -82,10 +86,18 @@ struct Parameters {
                 lef_file = argv[++i];
             } else if (strcmp(argv[i], "-def") == 0) {
                 def_file = argv[++i];
+            } else if (strcmp(argv[i], "-dgr") == 0) {
+                dgr_file = argv[++i];
+            } else if (strcmp(argv[i], "-tree") == 0) {
+                dgr_tree_file = argv[++i];
             } else if (strcmp(argv[i], "-output") == 0) {
                 out_file = argv[++i];
             } else if (strcmp(argv[i], "-threads") == 0) {
                 threads = std::stoi(argv[++i]);
+            } else if (strcmp(argv[i], "-sort") == 0) {
+                new_sort = std::stoi(argv[++i]);
+            } else if (strcmp(argv[i], "-phase2") == 0) {
+                phase2 = std::stoi(argv[++i]);
             } else {
                 log() << "Unrecognized arg..." << std::endl;
                 log() << argv[i] << std::endl;
@@ -94,7 +106,9 @@ struct Parameters {
         log() << "lef file: " << lef_file << std::endl;
         log() << "def file: " << def_file << std::endl;
         log() << "output  : " << out_file << std::endl;
+        log() << "dgr file : " << dgr_file  << std::endl;
         log() << "threads : " << threads  << std::endl;
+        log() << "sort    : " << new_sort  << std::endl;
         log() << std::endl;
     }
 };

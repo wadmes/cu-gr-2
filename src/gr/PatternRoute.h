@@ -47,23 +47,29 @@ class PatternRoute {
 public:
     static void readFluteLUT() { readLUT(); };
     
-    PatternRoute(GRNet& _net, const GridGraph& graph, const Parameters& param): 
-        net(_net), gridGraph(graph), parameters(param), numDagNodes(0) {}
+    PatternRoute(GRNet& _net, const GridGraph& graph, const Parameters& param, std::map<int,std::vector<std::vector<std::vector<int>>>>& DGRResult): 
+        net(_net), gridGraph(graph), parameters(param), numDagNodes(0), DGR_net_result(DGRResult) {}
     void constructSteinerTree();
     void constructRoutingDAG();
     void constructDetours(GridGraphView<bool>& congestionView);
     void run();
     void setSteinerTree(std::shared_ptr<SteinerTreeNode> tree) { steinerTree = tree; }
-    
+    void writeTree(std::ofstream& os);
+    void writePath(std::ofstream& os);
+    void constructDAGFromDGR();
 private:
     const Parameters& parameters;
     const GridGraph& gridGraph;
     GRNet& net;
     int numDagNodes;
+    int numSteinerNodes; // used for writing tree to file
+    std::map<int,std::vector<std::vector<std::vector<int>>>>& DGR_net_result; // pinIdex -> ViaIdx -> Via coordinates
+    
     std::shared_ptr<SteinerTreeNode> steinerTree;
-    std::shared_ptr<PatternRoutingNode> routingDag;
+    std::shared_ptr<PatternRoutingNode> routingDag; // root routing node
     
     void constructPaths(std::shared_ptr<PatternRoutingNode>& start, std::shared_ptr<PatternRoutingNode>& end, int childIndex = -1);
+    void constructPathsFromDGR(std::shared_ptr<PatternRoutingNode>& start, std::shared_ptr<PatternRoutingNode>& end,int current_idx);
     void calculateRoutingCosts(std::shared_ptr<PatternRoutingNode>& node);
     std::shared_ptr<GRTreeNode> getRoutingTree(std::shared_ptr<PatternRoutingNode>& node, int parentLayerIndex = -1);
 };
