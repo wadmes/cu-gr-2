@@ -6,6 +6,6 @@ scripts/__pycache__
 tags
 DR_log
 GR_log
-
+DR_result
 benchmark
 *.tar.gz
