@@ -177,7 +177,7 @@ void GlobalRouter::sortNetIndices(vector<int>& netIndices) const {
         numGcellPins[netIndex] = net.num_gcell_pins;
     }
     sort(netIndices.begin(), netIndices.end(), [&](int lhs, int rhs) {
-        if (parameters.new_sort == 1) {if (numPaths[lhs] - numGcellPins[lhs] != numPaths[rhs] - numGcellPins[rhs]) {return numPaths[lhs] - numGcellPins[lhs] < numPaths[rhs] - numGcellPins[rhs];}}
+        if (parameters.new_sort == 1) {if (numPaths[lhs]  != numPaths[rhs] ) {return numPaths[lhs] < numPaths[rhs]; } else {return halfParameters[lhs] < halfParameters[rhs];} }
         return halfParameters[lhs] < halfParameters[rhs];
     });
 }

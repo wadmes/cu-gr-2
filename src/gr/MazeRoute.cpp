@@ -105,7 +105,8 @@ void SparseGraph::init(GridGraphView<CostT>& wireCostView, SparseGrid& grid) {
         
         edges[u][2] = v;
         edges[v][2] = u;
-        costs[u][2] = costs[v][2] = 2 * gridGraph.getUnitViaCost();
+        if (parameters.new_sort == 0){costs[u][2] = costs[v][2] = 1 * gridGraph.getUnitViaCost();}
+        else{costs[u][2] = costs[v][2] = 2 * gridGraph.getUnitViaCost();}
     };
     
     for (int xi = 0; xi < xs.size(); xi++) {
