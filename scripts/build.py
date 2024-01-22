@@ -4,7 +4,7 @@ import argparse, os
 
 os.environ["CC"] = "/scratch/weili3/gcc/bin/gcc"
 os.environ["CXX"] = "/scratch/weili3/gcc/bin/g++"
-
+os.environ["BOOST_ROOT"] = "/scratch/weili3/boost"
 all_targets = ['route']
 run_files = 'scripts/*.py eval drcu'
 

@@ -306,7 +306,8 @@ void GridGraph::selectAccessPoints(GRNet& net, robin_hood::unordered_map<uint64_
                 // if not new sort (orig CUGR2)
                 // if (parameters.new_sort == 0) {accessibility += getEdge(point.layerIdx, point.x, point.y).capacity >= 1;}
                 // else {
-                accessibility += (getEdge(point.layerIdx, point.x, point.y).capacity - getEdge(point.layerIdx, point.x, point.y).demand) >= 1;
+                accessibility += getEdge(point.layerIdx, point.x, point.y).capacity >= 1;
+                // accessibility += (getEdge(point.layerIdx, point.x, point.y).capacity - getEdge(point.layerIdx, point.x, point.y).demand) >= 1;
                 if (point[direction] > 0) {
                     auto lower = point;
                     lower[direction] -= 1;

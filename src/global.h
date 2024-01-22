@@ -54,18 +54,19 @@ struct Parameters {
     std::string dgr_file;
     std::string dgr_tree_file; // whether DGR picks new trees, if it is not empty, then load the new tree
     int threads = 1;
-    int new_sort = 1; // new sort, which uses the number of available edges in DAG as the first priority. 1: enable; 0: disable.
+    int new_sort = 0; // new sort, which uses the number of available edges in DAG as the first priority. 1: enable; 0: disable. (1118-now disabled since it looks has bugs)
     int phase2 = 1; // 1: enable phase 2; 0: disable phase 2
+    int consider_via = 1; // 1: consider influence of vias and pins to congestion; 0: ignore it. (Like DAC'23 ILP paper)
     // 
     const double weight_wire_length = 0.5;
-    const double weight_via_number = 4.0; // used in maze routing to estimate via cost for a turning point
+    double weight_via_number = 4.0; // used in maze routing to estimate via cost for a turning point
     const double weight_short_area = 500.0;
     //
     const int min_routing_layer = 1;
     const double cost_logistic_slope = 1.0;
     const double max_detour_ratio = 0.25; // allowed stem length increase to trunk length ratio
     const int target_detour_count = 20;
-    const double via_multiplier = 2.0;
+    double via_multiplier = 2.0;
     //
     const double maze_logistic_slope = 0.5;
     //
@@ -98,10 +99,18 @@ struct Parameters {
                 new_sort = std::stoi(argv[++i]);
             } else if (strcmp(argv[i], "-phase2") == 0) {
                 phase2 = std::stoi(argv[++i]);
-            } else {
+            } else if (strcmp(argv[i], "-consider_via") == 0) {
+                consider_via = std::stoi(argv[++i]);
+            }else if (strcmp(argv[i], "-via_cost") == 0) {
+                weight_via_number = std::stod(argv[++i]);
+            }
+            else {
                 log() << "Unrecognized arg..." << std::endl;
                 log() << argv[i] << std::endl;
             }
+        }
+        if (consider_via == 0) {
+            via_multiplier = 0.0;
         }
         log() << "lef file: " << lef_file << std::endl;
         log() << "def file: " << def_file << std::endl;
@@ -109,6 +118,8 @@ struct Parameters {
         log() << "dgr file : " << dgr_file  << std::endl;
         log() << "threads : " << threads  << std::endl;
         log() << "sort    : " << new_sort  << std::endl;
+        log() << "phase2  : " << phase2  << std::endl;
+        log() << "consider_via  : " << consider_via  << std::endl;
         log() << std::endl;
     }
 };

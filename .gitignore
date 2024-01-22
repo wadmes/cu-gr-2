@@ -10,3 +10,4 @@ DR_result
 benchmark
 *.tar.gz
 CMakeFiles
+newbenchmark
