@@ -73,8 +73,8 @@ void GlobalRouter::route() {
         n2 = netIndices.size();
         std::string filename;
         // filename == dgr_tree.txt if dgr_file is specified, else filename == CUGR2_tree.txt
-        if (parameters.dgr_file != ""){filename = "dgr_tree.txt";}
-        else {filename = "CUGR2_tree.txt";}
+        if (parameters.dgr_file != ""){filename = parameters.out_file + ".dgr_tree.txt";}
+        else {filename = parameters.out_file + ".CUGR2_tree.txt";}
         os = new std::ofstream(filename);
         if (netIndices.size() > 0) {
             log() << "stage 2: pattern routing with possible detours" << std::endl;
@@ -402,7 +402,7 @@ void GlobalRouter::readDGRResult() {
     log() << "reading dgr result..." << std::endl;
     std::ifstream inputFile(parameters.dgr_file);
     if (!inputFile) {
-        std::cerr << "Error opening the file " << parameters.dgr_file<< " " <<std::endl;
+        log() << "Error opening the file " << parameters.dgr_file<< " " <<std::endl;
         return;
     }
     //reset num_paths of all net in nets as 0

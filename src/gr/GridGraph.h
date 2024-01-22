@@ -46,6 +46,7 @@ public:
     void commitTree(const std::shared_ptr<GRTreeNode>& tree, const bool reverse = false);
     
     // Checks
+    // NOTE: here is the change, original is < 0
     inline bool checkOverflow(const int layerIndex, const int x, const int y) const { return getEdge(layerIndex, x, y).getResource() < 0; }
     int checkOverflow(const int layerIndex, const utils::PointT<int> u, const utils::PointT<int> v) const; // Check wire overflow
     int checkOverflow(const std::shared_ptr<GRTreeNode>& tree) const; // Check routing tree overflow (Only wires are checked)
